@@ -22,5 +22,7 @@ like you used to with a Phoenix + PostgreSQL project.
 
 ### TODO
 
-- [ ] Enable Migrations
+- [ ] Generate Migration
+- [ ] Run Migration
+- [ ] Run Seeds
 - [ ] Create a Fallback Controller
