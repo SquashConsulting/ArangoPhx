@@ -39,7 +39,7 @@ defmodule Mix.Tasks.Arango.Gen.Migration do
 
       {_, _} ->
         Mix.raise(
-          "expected ecto.gen.migration to receive the migration file name, " <>
+          "expected arango.gen.migration to receive the migration file name, " <>
             "got: #{inspect(Enum.join(args, " "))}"
         )
     end

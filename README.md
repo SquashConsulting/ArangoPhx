@@ -20,7 +20,13 @@ You can use:
 
 like you used to with a Phoenix + PostgreSQL project.
 
+### Mix Tasks
+
+- `mix arango.gen.migration` - Generates a new migration for the ArangoPhx repo
+
 ### TODO
 
-- [ ] Enable Migrations
+- [x] Generate Migration
+- [ ] Run Migration
+- [ ] Run Seeds
 - [ ] Create a Fallback Controller
