@@ -13,11 +13,17 @@ defmodule Mix.Tasks.Arango.Migrate do
         |> Path.join(file_path)
         |> Code.eval_file()
 
-      apply(module, :up, [])
+      case apply(module, :up, []) do
+        :ok ->
+          File.cwd!()
+          |> Path.join("lib/mix/tasks/.migrated_versions")
+          |> File.write!("#{timestamp(file_path)}\n", [:append])
 
-      File.cwd!()
-      |> Path.join("lib/mix/tasks/.migrated_versions")
-      |> File.write!("#{timestamp(file_path)}\n", [:append])
+          Mix.shell().info("Successfully Migrated #{file_path}")
+
+        _ ->
+          Mix.shell().error("Unable To Migrate #{file_path}")
+      end
     end)
   end
 
