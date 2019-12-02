@@ -23,10 +23,11 @@ like you used to with a Phoenix + PostgreSQL project.
 ### Mix Tasks
 
 - `mix arango.gen.migration` - Generates a new migration for the ArangoPhx repo
+- `mix arango.migrate` - Runs all pending migrations.
 
 ### TODO
 
 - [x] Generate Migration
-- [ ] Run Migration
+- [x] Run Migration
 - [ ] Run Seeds
 - [ ] Create a Fallback Controller
