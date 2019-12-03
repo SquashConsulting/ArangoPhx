@@ -13,21 +13,21 @@
 
 ### Available functions
 
-You can use:
+`Ecto.Schema` and `Ecto.Changeset` can be used like you used to with a Phoenix + PostgreSQL project.
 
-- [x] `Ecto.Schema`
-- [x] `Ecto.Changeset`
+`Arango.Migrate` and `Arango.Gen.Migration` can be used to generate migration files, migrate, and rollback them.
 
-like you used to with a Phoenix + PostgreSQL project.
+`ArangoPhx.Repo` is custom Repo that exposes basic functionality to talk to [Arango DB](https://www.arangodb.com/)
 
 ### Mix Tasks
 
 - `mix arango.gen.migration` - Generates a new migration for the ArangoPhx repo
-- `mix arango.migrate` - Runs all pending migrations.
+- `mix arango.migrate` or `mix arango.migrate -d up` - Runs all pending migrations.
+- `mix arango.migrate down` or `mix arango.migrate -d down` - Rolls last migration back.
 
 ### TODO
 
-- [x] Generate Migration
-- [x] Run Migration
+- [ ] Squash Migrations
+- [ ] Generate JSONs
 - [ ] Run Seeds
 - [ ] Create a Fallback Controller
