@@ -63,9 +63,11 @@ defmodule Mix.Tasks.Arango.Gen.Migration do
     alias ArangoPhx.Repo
 
     def up do
+      :ok
     end
 
     def down do
+      :ok
     end
   end
   """)
