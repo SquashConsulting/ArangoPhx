@@ -27,7 +27,8 @@
 
 ### TODO
 
-- [ ] Squash Migrations
-- [ ] Generate JSONs
-- [ ] Run Seeds
-- [ ] Create a Fallback Controller
+Find the Project Board Here: https://github.com/rasjonell/ArangoPhx/projects/1
+
+- [Squash Migrations](https://github.com/rasjonell/ArangoPhx/issues/2)
+- [Generate Resources](https://github.com/rasjonell/ArangoPhx/issues/3)
+- [Create a Fallback Controller](https://github.com/rasjonell/ArangoPhx/issues/4)
