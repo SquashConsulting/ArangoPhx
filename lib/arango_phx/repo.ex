@@ -79,6 +79,67 @@ defmodule ArangoPhx.Repo do
     end)
   end
 
+  def list_collections do
+    case Arangox.get(__MODULE__, "/_api/collection?excludeSystem=true") do
+      {:ok, _, %{body: body}} -> {:ok, body["result"]}
+      {:error, %{status: status}} -> {:error, status}
+    end
+  end
+
+  def create_collection(name, type) do
+    case Arangox.post(__MODULE__, "/_api/collection", %{name: name, type: collection_type(type)}) do
+      {:ok, _, _} -> :ok
+      {:error, %{status: status}} -> {:error, status}
+    end
+  end
+
+  def drop_collection(name) do
+    case Arangox.delete(__MODULE__, "/_api/collection/#{name}") do
+      {:ok, _, _} -> :ok
+      {:error, %{status: status}} -> {:error, status}
+    end
+  end
+
+  def list_databases do
+    {:ok, conn} = system_db()
+
+    case Arangox.get(conn, "/_api/database") do
+      {:ok, _, %{body: body}} -> {:ok, body["result"]}
+      {:error, %{status: status}} -> {:error, status}
+    end
+  end
+
+  def create_database(name) do
+    {:ok, conn} = system_db()
+
+    case Arangox.post(conn, "/_api/database", %{name: name}) do
+      {:ok, _, _} -> :ok
+      {:error, %{status: status}} -> {:error, status}
+    end
+  end
+
+  def drop_database(name) do
+    {:ok, conn} = system_db()
+
+    case Arangox.delete(conn, "/_api/database/#{name}") do
+      {:ok, _, _} -> :ok
+      {:error, %{status: status}} -> {:error, status}
+    end
+  end
+
   defp collection(%Ecto.Changeset{} = struct), do: struct.data.__meta__.source
   defp collection(struct), do: struct.__struct__.__meta__.source
+
+  defp collection_type("document"), do: 2
+  defp collection_type("edge"), do: 3
+
+  defp system_db do
+    options = [
+      endpoints: "http://localhost:8529",
+      pool_size: 1,
+      database: "_system"
+    ]
+
+    Arangox.start_link(options)
+  end
 end
