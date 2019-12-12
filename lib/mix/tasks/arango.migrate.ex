@@ -13,6 +13,8 @@ defmodule Mix.Tasks.Arango.Migrate do
 
   @impl true
   def run(args) do
+    Mix.Task.run("app.start")
+
     case OptionParser.parse!(args, aliases: @aliases, strict: @switches) do
       {[], []} ->
         up()

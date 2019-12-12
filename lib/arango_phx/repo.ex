@@ -31,10 +31,7 @@ defmodule ArangoPhx.Repo do
   end
 
   def insert(struct, _opts \\ []) do
-    document =
-      struct
-      |> Map.from_struct()
-      |> Map.get(:changes)
+    document = document_changes(struct)
 
     case Arangox.post(
            __MODULE__,
@@ -46,11 +43,21 @@ defmodule ArangoPhx.Repo do
     end
   end
 
+  def insert!(struct, _opts \\ []) do
+    document = document_changes(struct)
+
+    {:ok, _, %{body: body}} =
+      Arangox.post(
+        __MODULE__,
+        "/_api/document/#{collection(struct)}?returnNew=true",
+        document
+      )
+
+    body["new"]
+  end
+
   def update(struct, id, _opts \\ []) do
-    document =
-      struct
-      |> Map.from_struct()
-      |> Map.get(:changes)
+    document = document_changes(struct)
 
     case Arangox.patch(
            __MODULE__,
@@ -60,6 +67,19 @@ defmodule ArangoPhx.Repo do
       {:ok, _, %{body: body}} -> {:ok, body["new"]}
       {:error, %{status: status}} -> {:error, status}
     end
+  end
+
+  def update!(struct, id, _opts \\ []) do
+    document = document_changes(struct)
+
+    {:ok, _, %{body: body}} =
+      Arangox.patch(
+        __MODULE__,
+        "/_api/document/#{collection(struct)}/#{id}?returnNew=true",
+        document
+      )
+
+    body["new"]
   end
 
   def delete(struct, id, _opts \\ []) do
@@ -127,17 +147,23 @@ defmodule ArangoPhx.Repo do
     end
   end
 
+  defp document_changes(struct) do
+    struct
+    |> Map.from_struct()
+    |> Map.get(:changes)
+  end
+
   defp collection(%Ecto.Changeset{} = struct), do: struct.data.__meta__.source
   defp collection(struct), do: struct.__struct__.__meta__.source
 
-  defp collection_type("document"), do: 2
-  defp collection_type("edge"), do: 3
+  defp collection_type(:document), do: 2
+  defp collection_type(:edge), do: 3
 
   defp system_db do
     options = [
-      endpoints: "http://localhost:8529",
       pool_size: 1,
-      database: "_system"
+      database: "_system",
+      endpoints: "http://localhost:8529"
     ]
 
     Arangox.start_link(options)
