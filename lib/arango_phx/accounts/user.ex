@@ -1,5 +1,5 @@
 defmodule ArangoPhx.Accounts.User do
-  use Ecto.Schema
+  use ArangoPhx.Schema
   import Ecto.Changeset
 
   schema "users" do
